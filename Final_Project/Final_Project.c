@@ -73,17 +73,16 @@ int main(int argc, char** argv){
 
     if(rank == 0){
         for(j=0; j<M+1; j++){
-            t=j;
+            t= a + j;
             u[0][j] = 1;
             u[j][0] = 1;
             u[M][j] = exp(t/M);
             u[j][M] = exp(t/M);
         }
-    }
-    if(rank == nprocs-1){
+    }else if(rank == nprocs-1){
         for(j=0; j<M+1; j++){
-            t=j;
-            u[0][j] = exp(t/M);
+            t = a + j;
+            u[0][j] = 1;
             u[j][0] = 1;
             u[M][j] = exp(t/M);
             u[j][M] = exp(t/M);
@@ -118,7 +117,7 @@ int main(int argc, char** argv){
         if(rank!=0){
             for(j=1; j<M; j++){
                 //send left boundary
-                MPI_Isend(&(u[1][j]), 1, MPI_DOUBLE, rank-1, 0, MPI_COMM_WORLD,&left_request);
+                MPI_Isend(&(u[2][j]), 1, MPI_DOUBLE, rank-1, 0, MPI_COMM_WORLD,&left_request);
                 //receive right boundary
                 MPI_Recv(&(u[0][j]), 1, MPI_DOUBLE, rank-1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             }
@@ -130,13 +129,13 @@ int main(int argc, char** argv){
         if(rank != nprocs-1){
             for(j=1; j<M; j++){
                 //send right boundary
-                MPI_Isend(&(u[M-1][j]), 1, MPI_DOUBLE, rank+1, 0, MPI_COMM_WORLD,&right_request);
+                MPI_Isend(&(u[M-2][j]), 1, MPI_DOUBLE, rank+1, 0, MPI_COMM_WORLD,&right_request);
                 //recieve left boundary
                 MPI_Recv(&(u[M][j]), 1, MPI_DOUBLE, rank+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             }
         }else{
             for(j=0; j<M+1; j++){
-                t = j;
+                t = a + j;
                 u[M][j] = exp(t/M);
             }
         }
