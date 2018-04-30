@@ -8,12 +8,10 @@
 
 double foo(double x, double y){
     return exp(x*y)*(x*x+y*y);
-    //return -1*(2*M_PI)*(2*M_PI)*cos(2*M_PI*x*y);
 }
 
 double exact(double x, double y){
     return exp(x*y);
-    //return cos(2*M_PI*x*y);
 }
 
 int main(int argc, char** argv){
@@ -25,27 +23,22 @@ int main(int argc, char** argv){
     MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
     
     // Initialize global variables
-
     int itermax = 5; // quick break for when itermax is not specified
     int p, M, N, err;
     double tol,t;
 
     // Read command line
-
     read_int(argc, argv, "-n", &N, &err);        
     read_int(argc, argv, "--itermax", &itermax, &err);
     read_double(argc, argv, "--tol", &tol, &err);
- 
 
     // Set intervals
-    
     M=N/nprocs;
     double sintvl = 1.0/nprocs;
     double a = sintvl*rank;
     double h = 1.0/N;
 
     // Initialize vectors
-
     double u[M+1][M+1];
     double prevu[M+1][M+1];
     double f[M][M];
@@ -57,20 +50,6 @@ int main(int argc, char** argv){
         }
     }
     // Initialize Boundary Conditions
-//    for(i=0; i<M+1; i++){
-//        t = i;
-//        u[i][0] = 1;
-//        u[0][i] = 1;
-        //printf("%s %i %s %.19g\n","boundary at ",i," is: ",exp(t/M));
-//        u[i][M] = exp(t/M);
-//        u[M][i] = exp(t/M);
-//    }
-//    for(i=0; i<M+1; i++){
-//        for(j=0; j<M+1; j++){
-//            printf("%.19g\n",u[i][j]);
-//        }
-//    }
-
     if(rank == 0){
         for(j=0; j<M+1; j++){
             t= a + j;
