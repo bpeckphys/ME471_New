@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 // Define the function
-
 double foo(double x, double y){
     return exp(x*y)*(x*x+y*y);
 }
