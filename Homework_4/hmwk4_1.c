@@ -249,10 +249,10 @@ void main(int argc, char** argv){
             print_debug("Node %i has a king of Spades cb = %s\n",my_rank,cb);
         }
     }
-    /*MPI_Type_contiguous(21, MPI_CHAR, &card_as_string); 
+    MPI_Type_contiguous(21, MPI_CHAR, &card_as_string); 
     MPI_Type_commit(&card_as_string);
-    int globalsize = 10;
-    int localsize = 2;
+    int globalsize = nprocs;
+    int localsize = 1;
     int starts = my_rank;
     int order = MPI_ORDER_C;
     int nsize = my_rank < nprocs-1 ? 4 : 5;
@@ -273,7 +273,7 @@ void main(int argc, char** argv){
     MPI_File_close(&file);
 
     MPI_Type_free(&localarray);
-    MPI_Type_free(&card_as_string);*/
+    MPI_Type_free(&card_as_string);
     
     
     MPI_Finalize();
